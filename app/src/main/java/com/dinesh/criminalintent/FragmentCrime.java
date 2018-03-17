@@ -13,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import com.dinesh.criminalintent.domain.Crime;
+
 
 public class FragmentCrime extends Fragment {
     private Crime mCrime;
@@ -25,8 +27,6 @@ public class FragmentCrime extends Fragment {
         super.onCreate(savedInstanceState);
         mCrime = new Crime();
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstatnceState){
@@ -51,7 +51,7 @@ public class FragmentCrime extends Fragment {
         });
         // Date Button
         mDateButton = (Button) v.findViewById(R.id.crime_date);
-        mDateButton.setText(mCrime.getmDate().toString());
+        mDateButton.setText(mCrime.getDate().toString());
         mDateButton.setEnabled(false);
 
         //Checkbox Button
@@ -59,7 +59,7 @@ public class FragmentCrime extends Fragment {
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                mCrime.setmSolved(isChecked);
+                mCrime.setSolved(isChecked);
 
             }
         });
