@@ -7,4 +7,9 @@
 /build
 /captures
 .externalNativeBuild
+
+*.ser
+.idea/codeStyles/Project.xml
+
 .idea/vcs.xml
+
