@@ -42,8 +42,13 @@ public class CrimeListFragment extends Fragment {
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimeList = crimeLab.getCrimes();
-        crimeAdapter = new CrimeAdapter(crimeList);
-        mCrimeRecyclerView.setAdapter(crimeAdapter);
+        if(crimeAdapter == null){
+            crimeAdapter = new CrimeAdapter(crimeList);
+            mCrimeRecyclerView.setAdapter(crimeAdapter);
+        }else{
+            crimeAdapter.notifyDataSetChanged();
+        }
+
 
     }
 
