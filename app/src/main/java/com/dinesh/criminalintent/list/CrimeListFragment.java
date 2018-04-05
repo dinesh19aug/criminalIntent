@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dinesh.criminalintent.CrimeActivity;
 import com.dinesh.criminalintent.R;
+import com.dinesh.criminalintent.ViewPager.CrimePagerActivity;
 import com.dinesh.criminalintent.domain.Crime;
 
 import java.util.List;
@@ -38,6 +38,14 @@ public class CrimeListFragment extends Fragment {
         updateUI();
         return view;
     }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        updateUI();
+    }
+
 
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
@@ -72,7 +80,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
 
         }

@@ -1,10 +1,13 @@
 package com.dinesh.criminalintent;
 
 
+import android.app.Activity;
+import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
+
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import android.widget.EditText;
 import com.dinesh.criminalintent.domain.Crime;
 import com.dinesh.criminalintent.list.CrimeLab;
 
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -25,6 +29,8 @@ public class CrimeFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
     private static final String ARG_CRIME_ID ="crime_id";
+    public static final String DIALOG_DATE = "DialogDate";
+    private static final int REQUEST_DATE = 0;
 
     public static CrimeFragment newInstance(UUID crimeId){
         Bundle args = new Bundle();
@@ -47,26 +53,20 @@ public class CrimeFragment extends Fragment {
         //Edit text Title Field
         mTitleField = v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
-        mTitleField.addTextChangedListener(new TextWatcher() {
+
+        // Date Button
+        mDateButton = v.findViewById(R.id.crime_date);
+        updateDate();
+        mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+                dialog.show(manager, DIALOG_DATE);
 
             }
         });
-        // Date Button
-        mDateButton = v.findViewById(R.id.crime_date);
-        mDateButton.setText(mCrime.getDate().toString());
-        mDateButton.setEnabled(false);
 
         //Checkbox Button
         mSolvedCheckBox = v.findViewById(R.id.crime_solved);
@@ -80,6 +80,22 @@ public class CrimeFragment extends Fragment {
         });
 
         return v;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(resultCode != Activity.RESULT_OK){
+            return;
+        }
+        if(requestCode == REQUEST_DATE){
+            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            mCrime.setDate(date);
+            updateDate();
+        }
+    }
+
+    private void updateDate() {
+        mDateButton.setText(mCrime.getDate().toString());
     }
 
 }
